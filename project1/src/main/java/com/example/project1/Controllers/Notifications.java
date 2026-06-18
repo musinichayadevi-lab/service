@@ -8,6 +8,6 @@ public class Notifications {
 
 @GetMapping("/notifications")
 public String notifications() {
-    return "notifications"; // notifications.jsp
+    return "notification"; // notifications.jsp
 }
 }
