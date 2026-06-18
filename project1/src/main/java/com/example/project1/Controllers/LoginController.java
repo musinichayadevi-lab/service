@@ -20,13 +20,14 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class LoginController {
 
-    private final String url = "jdbc:mysql://localhost:3306/blood_donation";
+    private final String url = "jdbc:mysql://localhost:3306/blooddonation";
     private final String dbUser = "root";
-    private final String dbPassword = "root";
+    private final String dbPassword = "Lambodhara@999";
     @GetMapping("/userlogin")
-    public String showLoginPage() {
+    public String loginPage() {
         return "userlogin";
     }
+   
     @PostMapping("/userlogin")
     public String loginUser(
             @RequestParam("email") String email,
