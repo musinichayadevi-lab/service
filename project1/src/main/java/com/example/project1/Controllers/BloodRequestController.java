@@ -10,16 +10,18 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.project1.Entity.BloodRequest;
 
 @Controller
 public class BloodRequestController {
 
-    private final String url = "jdbc:mysql://localhost:3306/blood_donation";
+    private final String url = "jdbc:mysql://localhost:3306/blooddonation";
     private final String dbUser = "root";
     private final String dbPassword = "root";
-
+    
     @GetMapping("/bloodRequests")
     public String getBloodRequests(Model model) {
 
@@ -59,7 +61,7 @@ public class BloodRequestController {
                 request.setHospital(rs.getString("hospital"));
                 request.setUnitsRequired(rs.getInt("units_required"));
                 request.setCity(rs.getString("city"));
-                request.setContact(rs.getString("contact_number"));
+                request.setContactNumber(rs.getString("contact_number"));
                 request.setStatus(rs.getString("status"));
 
                 requests.add(request);
@@ -72,5 +74,50 @@ public class BloodRequestController {
         }
 
         return requests;
+    }
+    @PostMapping("/saveBloodRequest")
+    public String saveBloodRequest(
+            @RequestParam String patientName,
+            @RequestParam String bloodGroup,
+            @RequestParam String hospital,
+            @RequestParam String city,
+            @RequestParam String contactNumber,
+            @RequestParam String requestDate) {
+
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection conn =
+                    DriverManager.getConnection(
+                            url,
+                            dbUser,
+                            dbPassword);
+
+            String sql =
+                    "INSERT INTO blood_requests " +
+                    "(patient_name,blood_group,hospital,city,contact_number,request_date) " +
+                    "VALUES(?,?,?,?,?,?)";
+
+            PreparedStatement ps =
+                    conn.prepareStatement(sql);
+
+            ps.setString(1, patientName);
+            ps.setString(2, bloodGroup);
+            ps.setString(3, hospital);
+            ps.setString(4, city);
+            ps.setString(5, contactNumber);
+            ps.setString(6, requestDate);
+
+            ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/request_success";
     }
 }
