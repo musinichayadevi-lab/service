@@ -11,6 +11,6 @@ public class Profile {
    
     @GetMapping("/profile")
     public String profile() {
-        return "profile"; // profile.jsp
+        return "my_profile"; // profile.jsp
     }
 }
