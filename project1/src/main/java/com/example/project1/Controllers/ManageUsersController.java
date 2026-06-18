@@ -65,10 +65,11 @@ public class ManageUsersController {
 
                 users.add(user);
             }
-
+    
             conn.close();
 
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             e.printStackTrace();
         }
 
