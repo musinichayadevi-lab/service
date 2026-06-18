@@ -1,5 +1,6 @@
 package com.example.project1.Controllers;
 
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,9 @@ import com.example.project1.Entity.BloodRequest;
 @Controller
 public class EmergencyRequestController {
 
-    private final String url = "jdbc:mysql://localhost:3306/blood_donation";
+    private final String url = "jdbc:mysql://localhost:3306/blooddonation";
     private final String dbUser = "root";
-    private final String dbPassword = "root";
+    private final String dbPassword = "Lambodhara@999";
 
     // SHOW PAGE + LIST
     @GetMapping("/emergency_request")
@@ -39,7 +40,7 @@ public class EmergencyRequestController {
                 r.setBloodGroup(rs.getString("blood_group"));
                 r.setHospital(rs.getString("hospital"));
                 r.setCity(rs.getString("city"));
-                r.setContact(rs.getString("contact"));
+                r.setContactNumber(rs.getString("contact"));
                 r.setUnitsRequired(rs.getInt("units_required"));
                 r.setUrgency(rs.getString("urgency"));
                 r.setNotes(rs.getString("notes"));
@@ -66,18 +67,14 @@ public class EmergencyRequestController {
             @RequestParam String bloodGroup,
             @RequestParam String hospital,
             @RequestParam String city,
-            @RequestParam String contact,
-            @RequestParam int unitsRequired,
-            @RequestParam String urgency,
-            @RequestParam(required = false) String notes
-    ) {
+            @RequestParam String contact) {
 
         try {
             Connection conn = DriverManager.getConnection(url, dbUser, dbPassword);
 
-            String sql = "INSERT INTO blood_request " +
-                    "(patient_name, blood_group, hospital, city, contact, units_required, urgency, notes) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO blood_requests " +
+                    "(patient_name, blood_group, hospital, city, contact_number, request_date) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -86,9 +83,7 @@ public class EmergencyRequestController {
             ps.setString(3, hospital);
             ps.setString(4, city);
             ps.setString(5, contact);
-            ps.setInt(6, unitsRequired);
-            ps.setString(7, urgency);
-            ps.setString(8, notes);
+            ps.setDate(6, new java.sql.Date(System.currentTimeMillis()));
 
             ps.executeUpdate();
 
@@ -99,5 +94,4 @@ public class EmergencyRequestController {
         }
 
         return "redirect:/emergency_request";
-    }
-}
+    }}
