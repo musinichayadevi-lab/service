@@ -1,6 +1,5 @@
 package com.example.project1.service;
 
-
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import com.example.project1.Entity.UserEntity;
 import com.example.project1.repository.UserRepository;
 
 @Service
-public class UserService {
+public class DashboardService {
 
     @Autowired
     private UserRepository userRepository;
@@ -24,11 +23,5 @@ public class UserService {
                 email,
                 password,
                 role);
-        
     }
-
-	public Optional<UserEntity> findByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-}
+    }
